@@ -1,4 +1,6 @@
 import React, {PropTypes} from 'react'; 
+import  {} from 'react-redux'; 
+import * as productActions  from '../../actions/productActions'; 
 
 class ProductsPage extends React.Component {
     constructor(props, context){
@@ -20,14 +22,19 @@ class ProductsPage extends React.Component {
 
     
     onClickSave(){
-        alert(`Saving ${this.state.product.title}`);  
+        //alert(`Saving ${this.state.product.title}`);  
         //alert("saving");  
+        this.props.dispatch(productActions.createProduct(this.state.product));
     }
 
+    productRow(product, index){
+        return <div key={index}>{product.title}</div>;
+    }
     render() {
         return (
             <div>
                 <h1>Products</h1> 
+                {this.props.products.map(this.productRow)}
                 <h2>Add Product</h2>
                 <input
                     type="text"
@@ -42,4 +49,9 @@ class ProductsPage extends React.Component {
     }
 }
 
-export default ProductsPage;
+function mapStateToProps(state, ownProps){
+    return{
+        products: state.products
+    };
+}
+export default connect(mapStateToProps)(ProductsPage);
